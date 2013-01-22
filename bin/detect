@@ -3,12 +3,12 @@
 
 # This buildpack is valid for use in project with a Build directory
 
-WEB_DIR=Build
-source .buildrc
+NGINX_CONF_FILE=nginx.conf.erb
 
-if [ -d $1/$WEB_DIR ]; then
-  echo "Hammer Buildpack"
+if [ -f $1/$NGINX_CONF_FILE ]; then
+  echo "Nginx Buildpack"
   exit 0
 else
+  echo "Not an Nginx app because the config file doesn't exist: $1/$NGINX_CONF_FILE"
   exit 1
 fi

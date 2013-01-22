@@ -1,13 +1,20 @@
-## Hammer Buildpack for Heroku
+## Heroku buildpack: Nginx
 
-This buildpack allows you to deploy a [Hammer](http://hammerformac.com/) project to Heroku as a static site, served with Nginx.
+This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) for [Nginx](wiki.nginx.org).
 
-Repositories are considered a valid Hammer project if they contain a `Build` directory. This directory must be committed to the repository because the Hammer build process cannot be run on the server, only locally.
+Usage
+-----
 
-#### Usage
+Example usage:
 
-    $ heroku create --stack cedar --buildpack http://github.com/danpalmer/heroku-buildpack-hammer.git
+	#Copy the example/nginx.conf.erb file into your app folder:
+    $ ls
+	nginx.conf.erb
 
+	#Create the heroku app, specifying this as the buildpack
+    $ heroku create --buildpack https://github.com/Taytay/heroku-buildpack-nginx.git
+
+	#deploy the app to heroku
     $ git push heroku master
     ...
     -----> Downloading Nginx Sources
@@ -17,9 +24,25 @@ Repositories are considered a valid Hammer project if they contain a `Build` dir
     -----> Installing
     -----> Creating Boot Script
 
+This buildpack will detect your app as an Nginx app if it has the file nginx.conf.erb in the root.
+Nginx is downloaded to Heroku and compiled on every push. Don't worry. It doesn't take long.
 
-#### Credits
 
-Tips on the general process of using Nginx on Heroku taken from [heroku-buildpack-nginx](http://github.com/mchung/heroku-buildpack-nginx/) by [@mchung](http://github.com/mchung/).
+Example config file
+-------------------
+The file example/nginx.conf.erb has an example config file that you can use to get started.
+You can do a lot with Nginx, from serving static sites to load balancing. More information at
+[Nginx Configuration](http://wiki.nginx.org/Configuration)
 
-Nginx configuration taken from http://library.linode.com/web-servers/nginx/configuration/basic.
+
+Motivations
+-----------
+I needed a cheap and easy way to play with Nginx. In particular, I am playing with [3Scale's Nginx API Proxy](https://support.3scale.net/howtos/api-configuration/nginx-proxy).
+
+
+Credits
+-------
+Dan Palmer figured all of the hard stuff out:
+[Heroku Buildpack For Hammer](http://danpalmer.me/blog/articles/2012-12-30-heroku-buildpack-for-hammer.html)
+
+I'm Taylor Brown, aka [Taytay](http://taytay.com/)
