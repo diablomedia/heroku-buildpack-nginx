@@ -9,6 +9,9 @@ CACHE_DIR=$2
 BUILDPACK_DIR=`cd $(dirname $0); cd ..; pwd`
 SUPPORT_DIR="$BUILDPACK_DIR/support"
 
+
+
+
 NGINX_DIR="nginx-1.2.6"
 NGINX_FILENAME="$NGINX_DIR.tar.gz"
 NGINX_URL="http://nginx.org/download/$NGINX_FILENAME"
@@ -29,6 +32,38 @@ function indent() {
 
 # Download and compile Nginx
 cd $CACHE_DIR
+
+
+#http://openresty.org/download/ngx_openresty-1.2.6.6.tar.gz
+#tar xzvf ngx_openresty-VERSION.tar.gz
+#cd ngx_openresty-VERSION/
+#./configure --with-luajit
+#make
+#make install
+
+OPENRESTY_DIR="ngx_openresty-1.2.6.6"
+OPENRESTY_URL="http://openresty.org/download/ngx_openresty-1.2.6.6.tar.gz"
+OPENRESTY_FILENAME="ngx_openresty-1.2.6.6.tar.gz"
+
+progress "Downloading OpenResty"
+curl $OPENRESTY_URL -o $OPENRESTY_FILENAME
+
+progress "Extracting OpenResty Sources"
+tar -xzf $OPENRESTY_FILENAME
+rm $OPENRESTY_FILENAME
+
+cd $OPENRESTY_DIR
+progress "Configuring"
+./configure --prefix=${BUILD_DIR}/openresty --with-luajit 2>&1 | indent
+
+progress "Compiling"
+make 2>&1 | indent
+
+
+
+
+cd $CACHE_DIR
+
 progress "Downloading Nginx Sources"
 curl $NGINX_URL -o $NGINX_FILENAME
 
