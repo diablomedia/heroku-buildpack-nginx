@@ -5,8 +5,8 @@ This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) fo
 Alternatives
 ------------
 There are more advanced alternatives that have Nginx precompiled with OpenRESTY:
-[leafo/heroku-openresty on GitHub](https://github.com/leafo/heroku-openresty) <- This is the one I'm using now
-[jtarchie / heroku-buildpack-openresty on GitHub](https://github.com/jtarchie/heroku-buildpack-openresty)
+[leafo/heroku-openresty on GitHub](https://github.com/leafo/heroku-openresty)
+[jtarchie/heroku-buildpack-openresty on GitHub](https://github.com/jtarchie/heroku-buildpack-openresty)
 
 
 Usage
