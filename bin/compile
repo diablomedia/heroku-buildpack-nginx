@@ -25,6 +25,7 @@ NGINX_BUILD_FLAGS=(
 	--without-http_rewrite_module
 	--with-pcre=../$PCRE_DIR
 )
+echo ${NGINX_BUILD_FLAGS[*]}
 
 mkdir -p $BUILD_DIR $CACHE_DIR
 
@@ -58,7 +59,7 @@ rm $PCRE_FILENAME
 
 cd $NGINX_DIR
 progress "Configuring"
-./configure $NGINX_BUILD_FLAGS 2>&1 | indent
+./configure ${NGINX_BUILD_FLAGS[*]} 2>&1 | indent
 
 progress "Compiling"
 make 2>&1 | indent
