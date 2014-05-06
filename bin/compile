@@ -16,7 +16,7 @@ NGINX_DIR="nginx-1.6.0"
 NGINX_FILENAME="$NGINX_DIR.tar.gz"
 NGINX_URL="http://nginx.org/download/$NGINX_FILENAME"
 
-PCRE_DIR="pcre-8.35
+PCRE_DIR="pcre-8.35"
 PCRE_FILENAME="$PCRE_DIR.tar.gz"
 PCRE_URL="ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$PCRE_FILENAME"
 
