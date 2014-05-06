@@ -12,9 +12,19 @@ SUPPORT_DIR="$BUILDPACK_DIR/support"
 
 
 
-NGINX_DIR="nginx-1.2.6"
+NGINX_DIR="nginx-1.6.0"
 NGINX_FILENAME="$NGINX_DIR.tar.gz"
 NGINX_URL="http://nginx.org/download/$NGINX_FILENAME"
+
+PCRE_DIR="pcre-8.35
+PCRE_FILENAME="$PCRE_DIR.tar.gz"
+PCRE_URL="ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$PCRE_FILENAME"
+
+NGINX_BUILD_FLAGS=(
+	--prefix=${BUILD_DIR}/nginx
+	--without-http_rewrite_module
+	--with-pcre=../$PCRE_DIR
+)
 
 mkdir -p $BUILD_DIR $CACHE_DIR
 
@@ -40,9 +50,15 @@ progress "Extracting Nginx Sources"
 tar -xzf $NGINX_FILENAME
 rm $NGINX_FILENAME
 
+progress "Downloading PCRE Source"
+curl $PCRE_URL -o $PCRE_FILENAME
+progress "Extracting PCRE"
+tar -xzf $PCRE_FILENAME
+rm $PCRE_FILENAME
+
 cd $NGINX_DIR
 progress "Configuring"
-./configure --prefix=${BUILD_DIR}/nginx --without-http_rewrite_module 2>&1 | indent
+./configure $NGINX_BUILD_FLAGS 2>&1 | indent
 
 progress "Compiling"
 make 2>&1 | indent
