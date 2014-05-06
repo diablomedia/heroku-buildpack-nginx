@@ -22,7 +22,6 @@ PCRE_URL="ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$PCRE_FILENAME"
 
 NGINX_BUILD_FLAGS=(
 	--prefix=${BUILD_DIR}/nginx
-	--without-http_rewrite_module
 	--with-pcre=../$PCRE_DIR
 )
 echo ${NGINX_BUILD_FLAGS[*]}
