@@ -31,8 +31,8 @@ NGXLUA_DIR="lua-nginx-module-$NGXLUA_VERSION"
 NGXLUA_FILENAME="$NGXLUA_DIR.tar.gz"
 NGXLUA_URL="https://codeload.github.com/openresty/lua-nginx-module/tar.gz/v$NGXLUA_VERSION"
 
-export LUAJIT_LIB="$BUILD_DIR/lib"
-export LUAJIT_INC="$BUILD_DIR/include/luajit-2.0"
+export LUAJIT_LIB="$BUILD_DIR/usr/lib"
+export LUAJIT_INC="$BUILD_DIR/usr/include/luajit-2.0"
 
 NGINX_BUILD_FLAGS=(
 	--prefix=${BUILD_DIR}/nginx
@@ -81,7 +81,7 @@ progress "Compiling LuaJIT"
 cd $LUAJIT_DIR
 make | indent
 progress "Installing LuaJIT"
-make install -e PREFIX=$BUILD_DIR | indent
+make DESTDIR=$BUILD_DIR install | indent
 cd -
 
 progress "Downloading NDK Source"
@@ -115,7 +115,6 @@ cp "$NGINX_CONF_SOURCE_FILE" "$NGINX_CONF_DEST_FILE"
 cd $BUILD_DIR
 cat >>boot.sh <<EOF
 #!/usr/bin/env bash
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_DIR/lib
 set -e
 set -x
 if [[ -a .buildrc ]]; then
