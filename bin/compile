@@ -84,7 +84,7 @@ progress "Compiling LuaJIT"
 cd $LUAJIT_DIR
 make
 progress "Installing LuaJIT"
-make -e PREFIX=`pwd`
+make install -e PREFIX=`pwd`
 cd -
 
 progress "Downloading NDK Source"
