@@ -81,7 +81,7 @@ progress "Compiling LuaJIT"
 cd $LUAJIT_DIR
 make | indent
 progress "Installing LuaJIT"
-make DESTDIR=$BUILD_DIR install | indent
+make DESTDIR=$BUILD_DIR PREFIX=/usr install | indent
 cd -
 
 progress "Downloading NDK Source"
