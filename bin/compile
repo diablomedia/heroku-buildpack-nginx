@@ -62,24 +62,24 @@ function indent() {
 # Download and compile Nginx
 cd $CACHE_DIR
 
-#progress "Downloading Nginx Sources"
-#curl $NGINX_URL -o $NGINX_FILENAME
-#
-#progress "Extracting Nginx Sources"
-#tar -xzf $NGINX_FILENAME
-#rm $NGINX_FILENAME
-#
-#progress "Downloading PCRE Source"
-#curl $PCRE_URL -o $PCRE_FILENAME
-#progress "Extracting PCRE"
-#tar -xzf $PCRE_FILENAME
-#rm $PCRE_FILENAME
+progress "Downloading Nginx Sources"
+curl $NGINX_URL -o $NGINX_FILENAME
 
-#progress "Downloading LuaJIT Source"
-#curl $LUAJIT_URL -o $LUAJIT_FILENAME
-#progress "Extracting LuaJIT"
-#tar -xzf $LUAJIT_FILENAME
-#rm $LUAJIT_FILENAME
+progress "Extracting Nginx Sources"
+tar -xzf $NGINX_FILENAME
+rm $NGINX_FILENAME
+
+progress "Downloading PCRE Source"
+curl $PCRE_URL -o $PCRE_FILENAME
+progress "Extracting PCRE"
+tar -xzf $PCRE_FILENAME
+rm $PCRE_FILENAME
+
+progress "Downloading LuaJIT Source"
+curl $LUAJIT_URL -o $LUAJIT_FILENAME
+progress "Extracting LuaJIT"
+tar -xzf $LUAJIT_FILENAME
+rm $LUAJIT_FILENAME
 progress "Compiling LuaJIT"
 cd $LUAJIT_DIR
 make
@@ -87,17 +87,17 @@ progress "Installing LuaJIT"
 make -e PREFIX=`pwd`
 cd -
 
-#progress "Downloading NDK Source"
-#curl $NDK_URL -o $NDK_FILENAME
-#progress "Extracting NDK"
-#tar -xzf $NDK_FILENAME
-#rm $NDK_FILENAME
+progress "Downloading NDK Source"
+curl $NDK_URL -o $NDK_FILENAME
+progress "Extracting NDK"
+tar -xzf $NDK_FILENAME
+rm $NDK_FILENAME
 
-#progress "Downloading lua-nginx module"
-#curl $NGXLUA_URL -o $NGXLUA_FILENAME
-#progress "Extracting lua-nginx"
-#tar -xzf $NGXLUA_FILENAME
-#rm $NGXLUA_FILENAME
+progress "Downloading lua-nginx module"
+curl $NGXLUA_URL -o $NGXLUA_FILENAME
+progress "Extracting lua-nginx"
+tar -xzf $NGXLUA_FILENAME
+rm $NGXLUA_FILENAME
 
 cd $NGINX_DIR
 progress "Configuring"
