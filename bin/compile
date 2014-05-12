@@ -9,9 +9,6 @@ CACHE_DIR=$2
 BUILDPACK_DIR=`cd $(dirname $0); cd ..; pwd`
 SUPPORT_DIR="$BUILDPACK_DIR/support"
 
-
-
-
 NGINX_DIR="nginx-1.6.0"
 NGINX_FILENAME="$NGINX_DIR.tar.gz"
 NGINX_URL="http://nginx.org/download/$NGINX_FILENAME"
@@ -34,8 +31,8 @@ NGXLUA_DIR="lua-nginx-module-$NGXLUA_VERSION"
 NGXLUA_FILENAME="$NGXLUA_DIR.tar.gz"
 NGXLUA_URL="https://codeload.github.com/openresty/lua-nginx-module/tar.gz/v$NGXLUA_VERSION"
 
-export LUAJIT_LIB="../$LUAJIT_DIR/lib"
-export LUAJIT_INC="../$LUAJIT_DIR/include/luajit-2.0"
+export LUAJIT_LIB="/usr/lib"
+export LUAJIT_INC="/usr/include/luajit-2.0"
 
 NGINX_BUILD_FLAGS=(
 	--prefix=${BUILD_DIR}/nginx
@@ -82,9 +79,9 @@ tar -xzf $LUAJIT_FILENAME
 rm $LUAJIT_FILENAME
 progress "Compiling LuaJIT"
 cd $LUAJIT_DIR
-make
+make | indent
 progress "Installing LuaJIT"
-make install -e PREFIX=`pwd`
+make install -e PREFIX=/usr | indent
 cd -
 
 progress "Downloading NDK Source"
