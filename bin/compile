@@ -31,8 +31,8 @@ NGXLUA_DIR="lua-nginx-module-$NGXLUA_VERSION"
 NGXLUA_FILENAME="$NGXLUA_DIR.tar.gz"
 NGXLUA_URL="https://codeload.github.com/openresty/lua-nginx-module/tar.gz/v$NGXLUA_VERSION"
 
-export LUAJIT_LIB="/usr/lib"
-export LUAJIT_INC="/usr/include/luajit-2.0"
+#export LUAJIT_LIB="/usr/lib"
+#export LUAJIT_INC="/usr/include/luajit-2.0"
 
 NGINX_BUILD_FLAGS=(
 	--prefix=${BUILD_DIR}/nginx
@@ -81,7 +81,7 @@ progress "Compiling LuaJIT"
 cd $LUAJIT_DIR
 make | indent
 progress "Installing LuaJIT"
-make install -e PREFIX=/usr | indent
+make install | indent
 cd -
 
 progress "Downloading NDK Source"
