@@ -3,8 +3,8 @@
 
 set -e
 
-BUILD_DIR=$1
-CACHE_DIR=$2
+BUILD_DIR=`readlink -m $1`
+CACHE_DIR=`readlink -m $2`
 
 BUILDPACK_DIR=`cd $(dirname $0); cd ..; pwd`
 SUPPORT_DIR="$BUILDPACK_DIR/support"
@@ -33,7 +33,6 @@ NGXLUA_URL="https://codeload.github.com/openresty/lua-nginx-module/tar.gz/v$NGXL
 
 export LUAJIT_LIB="$BUILD_DIR/lib"
 export LUAJIT_INC="$BUILD_DIR/include/luajit-2.0"
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_DIR/lib
 
 NGINX_BUILD_FLAGS=(
 	--prefix=${BUILD_DIR}/nginx
@@ -60,18 +59,18 @@ function indent() {
 # Download and compile Nginx
 cd $CACHE_DIR
 
-progress "Downloading Nginx Sources"
-curl $NGINX_URL -o $NGINX_FILENAME
-
-progress "Extracting Nginx Sources"
-tar -xzf $NGINX_FILENAME
-rm $NGINX_FILENAME
-
-progress "Downloading PCRE Source"
-curl $PCRE_URL -o $PCRE_FILENAME
-progress "Extracting PCRE"
-tar -xzf $PCRE_FILENAME
-rm $PCRE_FILENAME
+#progress "Downloading Nginx Sources"
+#curl $NGINX_URL -o $NGINX_FILENAME
+#
+#progress "Extracting Nginx Sources"
+#tar -xzf $NGINX_FILENAME
+#rm $NGINX_FILENAME
+#
+#progress "Downloading PCRE Source"
+#curl $PCRE_URL -o $PCRE_FILENAME
+#progress "Extracting PCRE"
+#tar -xzf $PCRE_FILENAME
+#rm $PCRE_FILENAME
 
 progress "Downloading LuaJIT Source"
 curl $LUAJIT_URL -o $LUAJIT_FILENAME
@@ -116,6 +115,7 @@ cp "$NGINX_CONF_SOURCE_FILE" "$NGINX_CONF_DEST_FILE"
 cd $BUILD_DIR
 cat >>boot.sh <<EOF
 #!/usr/bin/env bash
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_DIR/lib
 set -e
 set -x
 if [[ -a .buildrc ]]; then
