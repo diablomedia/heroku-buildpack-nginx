@@ -3,14 +3,11 @@
 
 set -e
 
-BUILD_DIR=$1
-CACHE_DIR=$2
+BUILD_DIR=`readlink -m $1`
+CACHE_DIR=`readlink -m $2`
 
 BUILDPACK_DIR=`cd $(dirname $0); cd ..; pwd`
 SUPPORT_DIR="$BUILDPACK_DIR/support"
-
-
-
 
 NGINX_DIR="nginx-1.6.0"
 NGINX_FILENAME="$NGINX_DIR.tar.gz"
@@ -20,9 +17,28 @@ PCRE_DIR="pcre-8.35"
 PCRE_FILENAME="$PCRE_DIR.tar.gz"
 PCRE_URL="ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$PCRE_FILENAME"
 
+LUAJIT_DIR="LuaJIT-2.0.3"
+LUAJIT_FILENAME="$LUAJIT_DIR.tar.gz"
+LUAJIT_URL="http://luajit.org/download/$LUAJIT_FILENAME"
+
+NDK_VERSION="0.2.19"
+NDK_DIR="ngx_devel_kit-$NDK_VERSION"
+NDK_FILENAME="$NDK_DIR.tar.gz"
+NDK_URL="https://codeload.github.com/simpl/ngx_devel_kit/tar.gz/v$NDK_VERSION"
+
+NGXLUA_VERSION="0.9.7"
+NGXLUA_DIR="lua-nginx-module-$NGXLUA_VERSION"
+NGXLUA_FILENAME="$NGXLUA_DIR.tar.gz"
+NGXLUA_URL="https://codeload.github.com/openresty/lua-nginx-module/tar.gz/v$NGXLUA_VERSION"
+
+export LUAJIT_LIB="$BUILD_DIR/usr/lib"
+export LUAJIT_INC="$BUILD_DIR/usr/include/luajit-2.0"
+
 NGINX_BUILD_FLAGS=(
 	--prefix=${BUILD_DIR}/nginx
 	--with-pcre=../$PCRE_DIR
+	--add-module=../$NDK_DIR
+	--add-module=../$NGXLUA_DIR
 )
 echo ${NGINX_BUILD_FLAGS[*]}
 
@@ -56,6 +72,30 @@ progress "Extracting PCRE"
 tar -xzf $PCRE_FILENAME
 rm $PCRE_FILENAME
 
+progress "Downloading LuaJIT Source"
+curl $LUAJIT_URL -o $LUAJIT_FILENAME
+progress "Extracting LuaJIT"
+tar -xzf $LUAJIT_FILENAME
+rm $LUAJIT_FILENAME
+progress "Compiling LuaJIT"
+cd $LUAJIT_DIR
+make | indent
+progress "Installing LuaJIT"
+make DESTDIR=$BUILD_DIR PREFIX=/usr install | indent
+cd -
+
+progress "Downloading NDK Source"
+curl $NDK_URL -o $NDK_FILENAME
+progress "Extracting NDK"
+tar -xzf $NDK_FILENAME
+rm $NDK_FILENAME
+
+progress "Downloading lua-nginx module"
+curl $NGXLUA_URL -o $NGXLUA_FILENAME
+progress "Extracting lua-nginx"
+tar -xzf $NGXLUA_FILENAME
+rm $NGXLUA_FILENAME
+
 cd $NGINX_DIR
 progress "Configuring"
 ./configure ${NGINX_BUILD_FLAGS[*]} 2>&1 | indent
@@ -82,6 +122,8 @@ if [[ -a .buildrc ]]; then
 fi
 erb ~/nginx/conf/nginx.conf.erb > ~/nginx/conf/nginx.conf
 touch ~/nginx/logs/access.log ~/nginx/logs/error.log
+echo "Initializing log tailing"
+tail -qF -n 0 ~/nginx/logs/*.log &
 echo "Launching Nginx"
 nginx -p ~/nginx
 EOF
