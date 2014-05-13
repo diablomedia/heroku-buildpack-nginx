@@ -122,6 +122,8 @@ if [[ -a .buildrc ]]; then
 fi
 erb ~/nginx/conf/nginx.conf.erb > ~/nginx/conf/nginx.conf
 touch ~/nginx/logs/access.log ~/nginx/logs/error.log
+echo "Initializing log tailing"
+tail -qF -n 0 ~/nginx/logs/nginx/*.log &
 echo "Launching Nginx"
 nginx -p ~/nginx
 EOF
