@@ -59,18 +59,18 @@ function indent() {
 # Download and compile Nginx
 cd $CACHE_DIR
 
-#progress "Downloading Nginx Sources"
-#curl $NGINX_URL -o $NGINX_FILENAME
-#
-#progress "Extracting Nginx Sources"
-#tar -xzf $NGINX_FILENAME
-#rm $NGINX_FILENAME
-#
-#progress "Downloading PCRE Source"
-#curl $PCRE_URL -o $PCRE_FILENAME
-#progress "Extracting PCRE"
-#tar -xzf $PCRE_FILENAME
-#rm $PCRE_FILENAME
+progress "Downloading Nginx Sources"
+curl $NGINX_URL -o $NGINX_FILENAME
+
+progress "Extracting Nginx Sources"
+tar -xzf $NGINX_FILENAME
+rm $NGINX_FILENAME
+
+progress "Downloading PCRE Source"
+curl $PCRE_URL -o $PCRE_FILENAME
+progress "Extracting PCRE"
+tar -xzf $PCRE_FILENAME
+rm $PCRE_FILENAME
 
 progress "Downloading LuaJIT Source"
 curl $LUAJIT_URL -o $LUAJIT_FILENAME
